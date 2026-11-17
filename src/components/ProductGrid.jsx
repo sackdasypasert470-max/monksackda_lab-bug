@@ -1,7 +1,6 @@
 import ProductCard from "./ProductCard.jsx";
 
 function ProductGrid({ products, onAdd }) {
-  console.log("cilck>>>")
   return (
     <div className="grid">
       {products.map((p) => (

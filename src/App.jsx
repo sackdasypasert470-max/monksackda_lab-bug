@@ -15,47 +15,32 @@ function App() {
     : products.filter((p) => p.category === category);
 
   function addToCart(product) {
-
-    const existing = cart.find((i) => i.id === product.id);
-    // if (existing) {
-    //   existing.qty += 1;
-    // } else {
-    //   cart.push({ ...product, qty: 1 });
-    // }
-    // setCart(cart);
-
-    // setCart(currentCart) => (
-    // const existing = currentCart.find((i) => i.id === product.id);
-    //   if (existing) {
-    //     existing.qty += 1;
-    //   } else {
-    //     currentCart.push({ ...product, qty: 1 });
-    //   }
-    //   setCart(currentCart);
-    // )
-
-    if (existing) {
-      setCart(cart.map((i) =>
-        i.id === product.id ? { ...i, qty: i.qty + 1 } : i
-      ));
-    } else {
-      setCart([...cart, { ...product, qty: 1 }]);
-    }
+    setCart((currentCart) => {
+      const existing = currentCart.find((i) => i.id === product.id);
+      return existing
+        ? currentCart.map((i) =>
+            i.id === product.id ? { ...i, qty: i.qty + 1 } : i
+          )
+        : [...currentCart, { ...product, qty: 1 }];
+    });
   }
 
   function increase(id) {
-  setCart(cart.map((i) => (i.id === id ? { ...i, qty: i.qty + 1 } : i)));
-}
+    setCart((currentCart) =>
+      currentCart.map((i) => (i.id === id ? { ...i, qty: i.qty + 1 } : i))
+    );
+  }
 
-  // compare with increase() above — this one works
   function decrease(id) {
-    setCart(
-      cart.map((i) => (i.id === id ? { ...i, qty: i.qty - 1 } : i)).filter((i) => i.qty > 0)
+    setCart((currentCart) =>
+      currentCart
+        .map((i) => (i.id === id ? { ...i, qty: i.qty - 1 } : i))
+        .filter((i) => i.qty > 0)
     );
   }
 
   function removeFromCart(id) {
-    setCart(cart.filter((i) => i.id !== id));
+    setCart((currentCart) => currentCart.filter((i) => i.id !== id));
   }
 
   const total = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
